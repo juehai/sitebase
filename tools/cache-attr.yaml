@@ -1,0 +1,33 @@
+---
+clone_profile:
+  clone_profile_name: '%{clone_profile_name}'
+  description: '%{description}'
+device_type:
+  device_typename: '%{device_typename}'
+manufacturer:
+  after_sales: '%{after_sales}'
+  description: '%{description}'
+  hotline: '%{hotline}'
+  manufacturer_name: '%{manufacturer_name}'
+  pre_sales: '%{pre_sales}'
+  sales: '%{sales}'
+model:
+  ampere: '%{ampere}'
+  description: '%{description}'
+  device_type: '%{device_type}'
+  device_unit: '%{device_unit}'
+  manufacturer: '%{manufacturer}'
+  model_name: '%{model_name}'
+  rating_power: '%{rating_power}'
+nodegroup:
+  description: '%{description}'
+  nodegroup_name: '%{nodegroup_name}'
+  nodegroup_tag: '%{nodegroup_tag}'
+os:
+  manufacturer: '%{manufacturer}'
+  os_arch: '%{os_arch}'
+  os_name: '%{os_name}'
+  os_version: '%{os_version}'
+state:
+  description: '%{description}'
+  state_name: '%{state_name}'

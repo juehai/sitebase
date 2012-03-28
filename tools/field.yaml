@@ -1,0 +1,295 @@
+---
+OOB信息:
+  oob_console_name:
+    displayname: 控制接口名称
+    sequence: '300'
+  oob_console_rate:
+    displayname: 控制台速率
+    sequence: '400'
+  oob_ip:
+    displayname: OOB IP
+    sequence: '100'
+  oob_mac:
+    displayname: OOB MAC
+    sequence: '200'
+位置信息:
+  blade_enclosure:
+    displayname: 所属刀框
+    reference: blade_enclosure
+    sequence: '800'
+  face_seq:
+    displayname: 面朝序列
+    sequence: '700'
+  hdrs_chassis:
+    displayname: 所属机箱
+    reference: hdrs_chassis
+    sequence: '1000'
+  horizontal_seq:
+    displayname: 横向序列
+    sequence: '500'
+  location_in_chassis:
+    displayname: 机箱内位置
+    sequence: '1100'
+  location_in_enclosure:
+    displayname: 刀框内位置
+    sequence: '900'
+  location_in_rack:
+    displayname: 机架内位置
+    sequence: '200'
+  rack:
+    displayname: 机架
+    reference: rack
+    sequence: '100'
+  row:
+    displayname: 所属排
+    sequence: '400'
+  site:
+    displayname: 机房
+    reference: site
+    sequence: '300'
+  vertical_seq:
+    displayname: 纵向序列
+    sequence: '600'
+  vmparent:
+    displayname: 虚拟机父设备
+    reference: vmparent
+    sequence: '1200'
+克隆信息:
+  clone_mac:
+    displayname: 克隆MAC
+    sequence: '200'
+  clone_profile:
+    displayname: 克隆模板
+    reference: clone_profile
+    sequence: '300'
+  clone_profile_name:
+    displayname: 克隆模板名称
+    sequence: '400'
+  is_clone:
+    displayname: 是否克隆
+    sequence: '100'
+厂商基础信息:
+  manufacturer_name:
+    displayname: 厂商名称
+    sequence: '5000'
+型号基础信息:
+  ampere:
+    displayname: 设备电流
+    sequence: '5000'
+  device_unit:
+    displayname: 设备U数
+    sequence: '5000'
+  manufacturer:
+    displayname: 生产厂商
+    reference: manufacturer
+    sequence: '5000'
+  model_name:
+    displayname: 型号名称
+    sequence: '100'
+  rating_power:
+    displayname: 额定功率
+    sequence: '5000'
+基础信息:
+  dns_ip:
+    displayname: 解析IP
+    sequence: '300'
+  model:
+    displayname: 设备型号
+    reference: model
+    sequence: '800'
+  node_tag:
+    displayname: 设备标签
+    sequence: '1500'
+  nodegroup:
+    displayname: 设备分组
+    reference: nodegroup
+    sequence: '700'
+  nodegroup_name:
+    displayname: 设备分组名称
+    sequence: '200'
+  nodegroup_tag:
+    displayname: 设备分组标签
+    sequence: '5000'
+  nodename:
+    displayname: 设备名称
+    sequence: '100'
+  os:
+    displayname: 操作系统
+    reference: os
+    sequence: '500'
+  rack_name:
+    displayname: 机架名称
+    sequence: '2200'
+  repo_name:
+    displayname: 库房名称
+    sequence: '5000'
+  site_name:
+    displayname: 机房名称
+    sequence: '2100'
+  sn:
+    displayname: 序列号
+    sequence: '400'
+  state:
+    displayname: 设备状态
+    reference: state
+    sequence: '600'
+  state_name:
+    displayname: 状态名称
+    sequence: '5000'
+接口三层信息:
+  interface_ipv4:
+    displayname: IPV4地址
+    sequence: '5000'
+  interface_ipv4_netmask:
+    displayname: IPV4掩码
+    sequence: '5000'
+  interface_ipv6_global:
+    displayname: IPV6全局地址
+    sequence: '5000'
+  interface_ipv6_link:
+    displayname: IPV6链路地址
+    sequence: '5000'
+接口二层信息:
+  interface_hardware_address:
+    displayname: 接口硬件地址
+    sequence: '5000'
+  interface_mtu:
+    displayname: 接口MTU
+    sequence: '5000'
+接口从属信息:
+  interface_belong_to:
+    displayname: 接口所属设备
+    reference: device
+    sequence: '5000'
+接口基础信息:
+  Interface_encap:
+    displayname: 接口封装类型
+    sequence: '200'
+  Interface_level:
+    displayname: 接口层级
+    sequence: '300'
+  interface_name:
+    displayname: 接口名称
+    sequence: '100'
+  interface_type:
+    displayname: 接口类型
+    sequence: '400'
+接口连接信息:
+  interface_connect_to:
+    displayname: 端口连接对象
+    reference: interface
+    sequence: '100'
+  mac0:
+    displayname: MAC0
+    sequence: '400'
+  mac1:
+    displayname: MAC1
+    sequence: '500'
+  switch0:
+    displayname: 交换机0
+    sequence: '200'
+  switch1:
+    displayname: 交换机1
+    sequence: '300'
+描述信息:
+  description:
+    displayname: 描述
+    sequence: '5000'
+操作系统信息:
+  os_arch:
+    displayname: 操作系统架构
+    sequence: '300'
+  os_name:
+    displayname: 操作系统名称
+    sequence: '100'
+  os_version:
+    displayname: 操作系统版本
+    sequence: '200'
+机房基础信息:
+  isp:
+    displayname: 运营商
+    sequence: '200'
+  rack_monthly_fees:
+    displayname: 单机架月租费
+    sequence: '500'
+  rack_number_all:
+    displayname: 总机架数
+    sequence: '300'
+  rack_number_pay:
+    displayname: 付费机架数
+    sequence: '600'
+  rack_unit_all:
+    displayname: 总U数
+    sequence: '400'
+  site_address:
+    displayname: 机房地址
+    sequence: '900'
+  site_fees_all:
+    displayname: 机房总费用
+    sequence: '700'
+  site_power:
+    displayname: 机房签约功率
+    sequence: '800'
+机架基础信息:
+  air_break:
+    displayname: 空开数
+    sequence: '200'
+  rack_power:
+    displayname: 机架功率
+    sequence: '300'
+  rack_unit:
+    displayname: 机架U数
+    sequence: '400'
+硬件信息:
+  hardware_info:
+    displayname: 硬件信息
+    sequence: '5000'
+联系信息:
+  after_sales:
+    displayname: 售后支持
+    sequence: '300'
+  hotline:
+    displayname: 服务热线
+    sequence: '400'
+  pre_sales:
+    displayname: 售前支持
+    sequence: '200'
+  sales:
+    displayname: 销售代表
+    sequence: '100'
+  san_managment_phone:
+    displayname: 存储设备管理电话
+    sequence: '500'
+设备类型信息:
+  device_type:
+    displayname: 设备类型
+    reference: device_type
+    sequence: '5000'
+  device_typename:
+    displayname: 设备类型名称
+    sequence: '5000'
+资产信息:
+  asset_number:
+    displayname: 资产编号
+    sequence: '100'
+  date_delivery:
+    displayname: 到货日期
+    sequence: '200'
+  date_outwarranty:
+    displayname: 过保日期
+    sequence: '400'
+  date_purchase:
+    displayname: 入资产库日期
+    sequence: '300'
+  date_renewal_end:
+    displayname: 续保结束日期
+    sequence: '800'
+  date_renewal_start:
+    displayname: 续保起始日期
+    sequence: '700'
+  original_cost:
+    displayname: 购买价格
+    sequence: '500'
+  renewal_vendor:
+    displayname: 续保商
+    sequence: '600'

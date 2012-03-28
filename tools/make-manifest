@@ -1,0 +1,79 @@
+#!/usr/bin/env python
+# -*- mode: python -*-
+
+
+MINITREE_SERVER = "http://minitree.corp.linuxnote.net/node/" 
+from ujson import decode as json_decode
+from yaml import safe_dump as yaml_dump
+from urllib import urlencode
+import urllib2
+
+def access_tree(path, node, http_method="GET", **kwargs):
+    opener = urllib2.build_opener(urllib2.HTTPHandler)
+    url = MINITREE_SERVER + path.replace(".", "/")
+    parameters = urlencode(kwargs)
+    if node:
+        request = urllib2.Request(url + "?" + parameters, json_encode(node))
+    else:
+        request = urllib2.Request(url + "?" + parameters)
+    request.get_method = lambda: http_method
+    return opener.open(request).read()
+
+def make_field():
+    ifield = dict()
+    classes = access_tree("app.opsfree2.field", None, method="children")
+    for class_path in json_decode(classes):
+        class_name = class_path.split(".")[-1]
+        class_path = class_path.encode("UTF-8")
+        fields = access_tree(class_path, None, method="children")
+        if class_name not in ifield:
+            ifield[class_name] = dict()
+        for field_path in json_decode(fields):
+            field_name = field_path.split(".")[-1]
+            if field_name not in ifield[class_name]:
+                ifield[class_name][field_name] = dict()
+            field = access_tree(field_path.encode("UTF-8"), None)
+            ifield[class_name][field_name] = json_decode(field)
+
+    yaml = yaml_dump(ifield, default_flow_style=False,
+                     width=70, encoding="utf-8",
+                     explicit_start=True, allow_unicode=True)
+    return yaml
+
+
+def make_manifest(manifest_class):
+    imanifest = dict()
+    manifest_classes = access_tree("app.opsfree2.manifest." + manifest_class,
+                                   None, method="children")
+    for class_path in json_decode(manifest_classes):
+        class_name = class_path.split(".")[-1]
+        if class_name not in imanifest:
+            imanifest[class_name] = dict()
+        manifests = access_tree(class_path.encode("UTF-8"),
+                                None, method="children")
+        for manifest_path in json_decode(manifests):
+            manifest_name = manifest_path.split(".")[-1]
+            if manifest_name not in imanifest[class_name]:
+                manifest = json_decode(access_tree(manifest_path.encode("UTF-8"), None))
+                imanifest[class_name][manifest_name] = dict(display_name=manifest["displayname"], cn=manifest["cn"], field=dict())
+            fields = access_tree(manifest_path.encode("UTF-8") + ".field",
+                                                      None, method="children")
+            for field_path in json_decode(fields):
+                field_name = field_path.split(".")[-1]
+                if field_name not in imanifest[class_name][manifest_name]:
+                    imanifest[class_name][manifest_name]["field"][field_name] = dict()
+                ifield = json_decode(access_tree(field_path.encode("UTF-8"), None))
+                imanifest[class_name][manifest_name]["field"][field_name] = ifield
+
+    
+    yaml = yaml_dump(imanifest, default_flow_style=False,
+                     width=70, encoding="utf-8",
+                     explicit_start=True, allow_unicode=True)
+    return yaml
+
+
+if __name__ == '__main__':
+    file("field.yaml", "w+").write(make_field())
+    file("manifest-device.yaml", "w+").write(make_manifest("device"))
+    file("manifest-attr.yaml", "w+").write(make_manifest("attr"))    
+

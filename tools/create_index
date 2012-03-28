@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+# -*- mode: python -*-
+from yaml import load as yaml_load
+import codecs
+import sys
+
+if __name__ == '__main__':
+    yaml = sys.argv[1]
+    field = dict()
+    with codecs.open(yaml, "r", encoding="utf-8") as f:
+        tree = yaml_load(f.read())
+        for catname in tree:
+            field.update(tree[catname])
+
+    for key in field:
+        d = dict(name=key.replace("'", "\\'"))
+        if d == '.': continue
+        print "CREATE INDEX idx_auto_node_value_%(name)s ON nodes ((value->E'%(name)s'));" % d
+        print "CREATE INDEX idx_auto_cache_value_%(name)s ON node_cache ((value->E'%(name)s'));" % d
+        print "CREATE INDEX idx_auto_node_value_%(name)s_i ON nodes (lower(value->E'%(name)s'));" % d
+        print "CREATE INDEX idx_auto_cache_value_%(name)s_i ON node_cache (lower(value->E'%(name)s'));" % d
+
+        # text pattern
+        print "CREATE INDEX idx_auto_node_value_text_%(name)s ON nodes USING BTREE((value->E'%(name)s') text_pattern_ops);" % d
+        print "CREATE INDEX idx_auto_cache_value_text_%(name)s ON node_cache USING BTREE((value->E'%(name)s') text_pattern_ops);" % d
+        print "CREATE INDEX idx_auto_node_value_text_%(name)s_i ON nodes USING BTREE(lower(value->E'%(name)s') text_pattern_ops);" % d
+        print "CREATE INDEX idx_auto_cache_value_text_%(name)s_i ON node_cache USING BTREE(lower(value->E'%(name)s') text_pattern_ops);" % d
+
+    for key in ["manifest", "cn"]:
+        d = dict(name=key.replace("'", "\\'"))
+        print "CREATE INDEX idx_auto_node_%(name)s ON nodes ((%(name)s));" % d
+        print "CREATE INDEX idx_auto_cache_%(name)s ON node_cache ((%(name)s));" % d
+        print "CREATE INDEX idx_auto_node_%(name)s_i ON nodes (lower(%(name)s));" % d
+        print "CREATE INDEX idx_auto_cache_%(name)s_i ON node_cache (lower(%(name)s));" % d
+
+        # text pattern
+        print "CREATE INDEX idx_auto_node_text_%(name)s ON nodes USING BTREE ((%(name)s) text_pattern_ops);" % d
+        print "CREATE INDEX idx_auto_cache_text_%(name)s ON node_cache USING BTREE ((%(name)s) text_pattern_ops);" % d
+        print "CREATE INDEX idx_auto_node_text_%(name)s_i ON nodes USING BTREE (lower(%(name)s) text_pattern_ops);" % d
+        print "CREATE INDEX idx_auto_cache_text_%(name)s_i ON node_cache USING BTREE (lower(%(name)s) text_pattern_ops);" % d
+
+
+    print "CREATE INDEX idx_auto_node_id ON nodes (id);" % d
+    print "CREATE INDEX idx_auto_cache_id ON node_cache (id);" % d

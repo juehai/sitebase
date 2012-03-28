@@ -1,0 +1,569 @@
+---
+基础设施:
+  rack:
+    cn: '%(rack_name)s'
+    display_name: 机架
+    field:
+      air_break: {}
+      description: {}
+      face_seq: {}
+      horizontal_seq: {}
+      rack_name:
+        not_null: '1'
+        unique: '1'
+      rack_power: {}
+      rack_unit: {}
+      row: {}
+      site: {}
+      vertical_seq: {}
+  site:
+    cn: '%(site_name)s'
+    display_name: 机房
+    field:
+      description: {}
+      isp: {}
+      rack_monthly_fees: {}
+      rack_number_all: {}
+      rack_number_pay: {}
+      rack_unit_all: {}
+      site_address: {}
+      site_fees_all: {}
+      site_name:
+        not_null: '1'
+        unique: '1'
+      site_power: {}
+存储设备:
+  disk_enclosure:
+    cn: '%(nodename)s'
+    display_name: 磁盘柜
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      original_cost: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  nas_controller:
+    cn: '%(nodename)s'
+    display_name: NAS控制器
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      original_cost: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  san_storage:
+    cn: '%(nodename)s'
+    display_name: SAN存储
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      original_cost: {}
+      rack: {}
+      renewal_vendor: {}
+      san_managment_phone: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  san_switch:
+    cn: '%(nodename)s'
+    display_name: SAN交换机
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model: {}
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      original_cost: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  tape_library:
+    cn: '%(nodename)s'
+    display_name: 磁带库
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      original_cost: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+服务器设备:
+  blade_enclosure:
+    cn: '%(nodename)s'
+    display_name: 刀框
+    field:
+      date_delivery: {}
+      date_outwarranty: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      oob_console_name: {}
+      oob_console_rate: {}
+      oob_ip: {}
+      oob_mac: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  blade_server:
+    cn: '%(nodename)s'
+    display_name: 刀片服务器
+    field:
+      asset_number: {}
+      blade_enclosure: {}
+      clone_mac: {}
+      clone_profile: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      hardware_info: {}
+      is_clone: {}
+      location_in_enclosure: {}
+      mac0: {}
+      mac1: {}
+      model:
+        not_null: '1'
+      node_tag: {}
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      oob_console_name: {}
+      oob_console_rate: {}
+      oob_ip: {}
+      oob_mac: {}
+      original_cost: {}
+      os: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+      switch0: {}
+      switch1: {}
+  hd_rackserver:
+    cn: '%(nodename)s'
+    display_name: 高密机架服务器
+    field:
+      asset_number: {}
+      clone_mac: {}
+      clone_profile: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      hardware_info: {}
+      hdrs_chassis: {}
+      is_clone: {}
+      location_in_chassis: {}
+      mac0: {}
+      mac1: {}
+      model: {}
+      node_tag: {}
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      oob_console_name: {}
+      oob_console_rate: {}
+      oob_ip: {}
+      oob_mac: {}
+      original_cost: {}
+      os: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+      switch0: {}
+      switch1: {}
+  hdrs_chassis:
+    cn: '%(nodename)s'
+    display_name: 高密机架服务器机箱
+    field:
+      date_delivery: {}
+      date_outwarranty: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      location_in_rack: {}
+      model: {}
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  mail_gateway:
+    cn: '%(nodename)s'
+    display_name: 邮件网关
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      oob_console_name: {}
+      oob_console_rate: {}
+      oob_ip: {}
+      oob_mac: {}
+      original_cost: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  rack_server:
+    cn: '%(nodename)s'
+    display_name: 机架服务器
+    field:
+      asset_number: {}
+      clone_mac: {}
+      clone_profile: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      hardware_info: {}
+      is_clone: {}
+      location_in_rack: {}
+      mac0: {}
+      mac1: {}
+      model:
+        not_null: '1'
+      node_tag: {}
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      oob_console_name: {}
+      oob_console_rate: {}
+      oob_ip: {}
+      oob_mac: {}
+      original_cost: {}
+      os: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        unique: '1'
+      state: {}
+      switch0: {}
+      switch1: {}
+  sc_partition:
+    cn: '%(nodename)s'
+    display_name: 小型机分区
+    field:
+      description: {}
+      dns_ip: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      os: {}
+      state: {}
+      vmparent: {}
+  sc_server:
+    cn: '%(nodename)s'
+    display_name: 小型机
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      original_cost: {}
+      os: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  vm_server:
+    cn: '%(nodename)s'
+    display_name: 虚拟机
+    field:
+      clone_mac: {}
+      clone_profile: {}
+      description: {}
+      dns_ip: {}
+      is_clone: {}
+      model:
+        not_null: '1'
+      node_tag: {}
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      os: {}
+      state: {}
+      vmparent: {}
+网络设备:
+  firewall:
+    cn: '%(nodename)s'
+    display_name: 防火墙
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      oob_console_name: {}
+      original_cost: {}
+      os: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  load_balance:
+    cn: '%(nodename)s'
+    display_name: 负载均衡
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      oob_console_name: {}
+      original_cost: {}
+      os: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  router:
+    cn: '%(nodename)s'
+    display_name: 路由器
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      node_tag: {}
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      oob_console_name: {}
+      original_cost: {}
+      os: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+  switch:
+    cn: '%(nodename)s'
+    display_name: 交换机
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      date_renewal_end: {}
+      date_renewal_start: {}
+      description: {}
+      dns_ip: {}
+      location_in_rack: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      nodename:
+        not_null: '1'
+        unique: '1'
+      oob_console_name: {}
+      original_cost: {}
+      os: {}
+      rack: {}
+      renewal_vendor: {}
+      sn:
+        not_null: '1'
+        unique: '1'
+      state: {}
+虚拟对象:
+  interface:
+    cn: '%(interface_name)s'
+    display_name: 设备接口
+    field:
+      Interface_encap: {}
+      Interface_level: {}
+      interface_belong_to: {}
+      interface_connect_to: {}
+      interface_hardware_address: {}
+      interface_ipv4: {}
+      interface_ipv4_netmask: {}
+      interface_ipv6_global: {}
+      interface_ipv6_link: {}
+      interface_mtu: {}
+      interface_name: {}
+      interface_type: {}
+配件:
+  network_module:
+    cn: '%(sn)s'
+    display_name: 网络模块
+    field:
+      asset_number: {}
+      date_delivery: {}
+      date_outwarranty: {}
+      date_purchase: {}
+      model:
+        not_null: '1'
+      nodegroup: {}
+      original_cost: {}
+      sn:
+        not_null: '1'
+        unique: '1'

@@ -1,0 +1,222 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import urllib2
+import time
+import re
+import sys
+from urllib import urlencode
+from ujson import decode as json_decode, encode as json_encode
+
+RE_ID = re.compile("[^A-Za-z0-9_]")
+BAD_CHAR = re.compile("-| |\\\|/|\.")
+
+OPSFREE_SERVER = "http://119.42.224.10:9999/nodes.json"
+
+def request(q,num=0,expand=None):
+    param = dict(q=q, n=num, _username="droid/droid")
+    if expand is not None:
+        param['e'] = expand
+    ret = urllib2.urlopen(OPSFREE_SERVER + '?' + urlencode(param))
+    json = ret.read()
+    return json_decode(json)
+
+def escape_path(path):
+    if BAD_CHAR.search(path):
+        path = BAD_CHAR.sub('_', path)
+    return path
+
+def access_service(url, node, method="GET"):
+    opener = urllib2.build_opener(urllib2.HTTPHandler)
+    request = urllib2.Request(url, json_encode(node))
+    request.get_method = lambda: method
+    return opener.open(request).read()
+
+def do_import(name):
+    rule = RULES[name]
+    json = list() for d in rule["f_load"](rule["load_arg"]):
+        startTime = time.time()
+        keys = d["manifest"]["attributes"].keys()
+        node = dict(map(lambda x: (x, ''), keys))
+        id = d["id"]
+        expanded = request("id == %s" % d["id"], num=1, expand=1)
+        print >>sys.stderr, "LOAD: %.2fms" % ((time.time() - startTime) * 1000)
+        startTime = time.time()
+        node.update(dict(map(lambda x: (x, expanded[0][x]),
+                             filter(lambda x: x in keys, expanded[0]))))
+#        node.update(dict(map(lambda x: (x, d["detail"][x]),
+#                             filter(lambda x: x in keys, d["detail"]))))
+        try:
+            node = rule["f_node_fix_pre"](node)
+            node = rule["f_node_fix_post"](node)
+            data = dict(id=id, manifest=name, value=node)
+            json.append(data)
+            #access_service("http://localhost:8000/node",
+            #               data, method="PUT")
+            #print "SAVE: %s: %.2fms" % (name, (time.time() - startTime) * 1000)
+        except urllib2.HTTPError as e:
+            data = json_decode(e.read())
+            code = e.code
+            print >>sys.stderr, "ERROR: [%d] (%s)" % (id, code), str(e), data
+        except Exception as e:
+            print >>sys.stderr, "ERROR: %s" % str(e)
+    print json_encode(json)
+
+def fix_rack_node_pre(node):
+
+    def _fix_name(name, site):
+       name = name.replace(" ", "-").replace("_", "-")
+       while name.find(site + "-") > -1:
+           name = name.replace(site + "-", "")
+       return name
+
+    node["rack_name"] = _fix_name(node["rack_name"].upper(),
+                                  node["site"].upper())
+    if not node["rack_name"]:
+        raise Exception("rack_name is empty, id=%s" % str(node))
+    return node
+
+def fix_rack_node_post(node):
+    node["site"] = node["site"].lower()
+    return node
+
+
+def fix_os_post(node):
+    node["manufacturer"] = node["manufacturer"].lower()
+    return node
+
+def fix_model_post(node):
+    node['manufacturer'] = node["manufacturer"].lower()
+    node['device_type'] = node["device_type"].lower()
+    return node
+
+def fix_rack_server_pre(node):
+
+    def _fix_name(name, site):
+       name = name.replace(" ", "-").replace("_", "-")
+       while name.find(site + "-") > -1:
+           name = name.replace(site + "-", "")
+       return name
+
+    try:
+        site, rack = node["rack"].split("-", 1)
+        rack = _fix_name(rack.upper(), site.upper())
+        node["rack"] = site + "-" + rack
+    except:
+        pass
+    return node
+
+
+def fix_rack_server_post(node):
+    fields = ('os', 'state', 'nodegroup', 'model', 'rack', 'clone_profile')
+    def fix_field(field):
+        if node[field]:
+            node[field] = node[field].lower()
+    map(lambda f: fix_field(f), fields)
+    return node
+
+def fix_vm_server_post(node):
+    fields = ('os', 'state', 'nodegroup', 'model', 'rack', 'clone_profile')
+    def fix_field(field):
+        if node[field]:
+            node[field] = node[field].lower()
+    map(lambda f: fix_field(f), fields)
+    return node
+
+
+RULES = {
+    "site": {
+        "f_load": request,
+        "load_arg": "manifest in site",
+        "f_node_fix_pre": lambda x: x,
+        "f_node_fix_post": lambda x: x,
+    },
+    "rack": {
+        "f_load": request,
+        "load_arg": "manifest in rack",
+        "f_node_fix_pre": fix_rack_node_pre,
+        "f_node_fix_post": fix_rack_node_post,
+    },
+    "state": {
+        "f_load": request,
+        "load_arg": "manifest in state",
+        "f_node_fix_pre": lambda x: x,
+        "f_node_fix_post": lambda x: x,
+    },
+    "manufacturer": {
+        "f_load": request,
+        "load_arg": "manifest in manufacturer",
+        "f_node_fix_pre": lambda x: x,
+        "f_node_fix_post": lambda x: x,
+    },
+    "os": {
+        "f_load": request,
+        "load_arg": "manifest in os",
+        "f_node_fix_pre": lambda x: x,
+        "f_node_fix_post": fix_os_post,
+    },
+    "device_type": {
+        "f_load": request,
+        "load_arg": "manifest in device_type",
+        "f_node_fix_pre": lambda x: x,
+        "f_node_fix_post": lambda x: x,
+    },
+    "model": {
+        "f_load": request,
+        "load_arg": "manifest in model",
+        "f_node_fix_pre": lambda x: x,
+        "f_node_fix_post": fix_model_post,
+    },
+    "nodegroup": {
+        "f_load": request,
+        "load_arg": "manifest in nodegroup",
+        "f_node_fix_pre": lambda x: x,
+        "f_node_fix_post": lambda x: x,
+    },
+    "state": {
+        "f_load": request,
+        "load_arg": "manifest in state",
+        "f_node_fix_pre": lambda x: x,
+        "f_node_fix_post": lambda x: x,
+    },
+    "clone_profile": {
+        "f_load": request,
+        "load_arg": "manifest in clone_profile",
+        "f_node_fix_pre": lambda x: x,
+        "f_node_fix_post": lambda x: x,
+    },
+    "rack_server": {
+        "f_load": request,
+        "load_arg": "manifest in rack_server",
+        "f_node_fix_pre": fix_rack_server_pre,
+        "f_node_fix_post": fix_rack_server_post,
+    },
+    "vm_server": {
+        "f_load": request,
+        "load_arg": "manifest in vm_server",
+        "f_node_fix_pre": lambda x: x,
+        "f_node_fix_post": fix_vm_server_post,
+    },
+}
+
+
+#  _   _  ___ _____ ___ ____ _____
+# | \ | |/ _ \_   _|_ _/ ___| ____|
+# |  \| | | | || |  | | |   |  _|
+# | |\  | |_| || |  | | |___| |___
+# |_| \_|\___/ |_| |___\____|_____|
+#
+# !!!: * REPLACE ALL '-' to '_'
+#    : *
+
+if __name__ == '__main__':
+    do_import(sys.argv[1])
+    #do_import("site")
+    #do_import("rack")
+    #do_import("manufacturer")
+    #do_import("os")
+    #do_import("device_type")
+    #do_import("model")
+    #do_import("nodegroup")
+    #do_import("state")
+    #do_import("clone_profile")
+    #do_import("rack_server")

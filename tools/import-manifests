@@ -1,0 +1,86 @@
+#!/usr/bin/env python
+# -*- mode: python -*-
+
+import time
+from ujson import decode as json_decode, encode as json_encode
+import urllib2
+
+MINITREE_SERVER = "http://minitree.corp.linuxnote.net/node/"
+server = "http://opsdb1.ops.cnz.alimama.com/"
+
+def access_tree(path, node, method="GET"):
+    opener = urllib2.build_opener(urllib2.HTTPHandler)
+    url = MINITREE_SERVER + path.replace(".", "/")
+    request = urllib2.Request(url, json_encode(node))
+    request.get_method = lambda: method
+    return path, opener.open(request).read()
+
+def create_path(path):
+    node_path = list()
+    parts = path.split(".")
+    for part in parts:
+        node_path.append(part)
+        if len(node_path) < 3:
+            continue
+        ancestor = ".".join(node_path)
+        try:
+            ret = access_tree(ancestor, dict(), method="GET")
+        except urllib2.HTTPError as e:
+            if e.code == 404:
+                print "Creating %s" % ancestor
+                try:
+                    access_tree(ancestor, dict(), method="PUT")
+                except:
+                    raise
+
+def insert_node(path, node):
+    create_path(path)
+    try:
+        startTime = time.time()
+        print access_tree(path, node, method="POST"),
+        print "%.2fms" % ((time.time() - startTime) * 1000)
+    except urllib2.HTTPError as e:
+        data = json_decode(e.read())
+        code = e.code
+        print >>sys.stderr, "ERROR: [%s] (%s)" % (path, code), str(e), data
+
+def do_import_fields():
+    data = urllib2.urlopen(server + "fields.json?_username=droid/droid" ).read()
+    fields = json_decode(data)
+    for field in fields:
+        datum = dict(displayname=field["desc"])
+        try:
+            cls, seq = field["classname"].split(":", 1)
+        except ValueError:
+            cls = field["classname"]
+            seq = 5000
+        if field["attribute"].find("node") > -1:
+            manifest = field["attribute"][5:-1]
+            datum["reference"] = manifest
+
+        path = "app.opsfree2.field." + cls + "." + field["name"]
+        datum["sequence"] = seq
+        insert_node(path.encode("UTF-8"), datum)
+
+def do_import_manifest():
+    data = urllib2.urlopen(server + "manifests.json?_username=droid/droid" ).read()
+    manifests = json_decode(data)
+    for manifest in manifests:
+        node = dict(displayname=manifest["desc"], cn=manifest["repr"])
+        cls, classname =  manifest["classname"].split(":")
+        path = "app.opsfree2.manifest." + cls.lower() + "." + classname
+        path += "." + manifest["name"]
+        insert_node(path.encode("UTF-8"), node)
+        for attribute in manifest["attributes"]:
+            cons = manifest["attributes"][attribute].split(",")
+            apath = path + ".field." + attribute
+            node = dict()
+            if "not null" in cons:
+                node["not_null"] = 1
+            if "unique" in cons:
+                node["unique"] = 1
+            insert_node(apath.encode("UTF-8"), node)
+        
+if __name__ == '__main__':
+#    do_import_fields()
+    do_import_manifest()

@@ -1,0 +1,66 @@
+---
+克隆模板:
+  clone_profile:
+    cn: '%(clone_profile_name)s'
+    display_name: 克隆模板
+    field:
+      clone_profile_name:
+        not_null: '1'
+        unique: '1'
+      description: {}
+基本属性:
+  device_type:
+    cn: '%(device_typename)s'
+    display_name: 设备类型
+    field:
+      device_typename: {}
+  model:
+    cn: '%(model_name)s'
+    display_name: 设备型号
+    field:
+      ampere: {}
+      description: {}
+      device_type: {}
+      device_unit: {}
+      manufacturer: {}
+      model_name: {}
+      rating_power: {}
+  nodegroup:
+    cn: '%(nodegroup_name)s'
+    display_name: 设备分组
+    field:
+      description: {}
+      nodegroup_name:
+        not_null: '1'
+      nodegroup_tag: {}
+  state:
+    cn: '%(state_name)s'
+    display_name: 设备状态
+    field:
+      description: {}
+      state_name:
+        not_null: '1'
+        unique: '1'
+操作系统:
+  os:
+    cn: '%(os_name)s_%(os_version)s_%(os_arch)s'
+    display_name: 操作系统
+    field:
+      manufacturer: {}
+      os_arch: {}
+      os_name:
+        not_null: '1'
+      os_version: {}
+渠道:
+  manufacturer:
+    cn: '%(manufacturer_name)s'
+    display_name: 生产厂商
+    field:
+      after_sales: {}
+      description: {}
+      hotline: {}
+      manufacturer_name:
+        not_null: '1'
+        unique: '1'
+      pre_sales: {}
+      sales: {}
